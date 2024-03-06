@@ -4,12 +4,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tericce_animation/bloc_notifier/theme_bloc/theme_bloc.dart';
 import 'package:tericce_animation/bloc_notifier/update_data_bloc/get_user_bloc.dart';
-import 'package:tericce_animation/generated/assets.dart';
 import 'package:tericce_animation/models/user_model/user_model.dart';
 import 'package:tericce_animation/utils/theme_helper.dart';
 import 'package:tericce_animation/view/profile_view/profile_view.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
-import 'view/animation2/flip_terrace.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
