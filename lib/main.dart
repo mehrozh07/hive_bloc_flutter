@@ -6,6 +6,7 @@ import 'package:tericce_animation/bloc_notifier/theme_bloc/theme_bloc.dart';
 import 'package:tericce_animation/bloc_notifier/update_data_bloc/get_user_bloc.dart';
 import 'package:tericce_animation/generated/assets.dart';
 import 'package:tericce_animation/models/user_model/user_model.dart';
+import 'package:tericce_animation/utils/theme_helper.dart';
 import 'package:tericce_animation/view/create_time/screens/create_time_view.dart';
 import 'package:tericce_animation/view/profile_view/profile_view.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
@@ -32,32 +33,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeData>(
-      builder: (context, state) {
-        return MaterialApp(
-          theme: state.copyWith(
-              // textTheme: const TextTheme(
-              //     titleLarge: TextStyle(
-              //         fontWeight: FontWeight.bold,
-              //         color: Colors.black,
-              //         fontSize: 20
-              //     )
-              // )
-          ),
-          title: 'Flutter Demo',
-          darkTheme: state.copyWith(
-            // textTheme: const TextTheme(
-            //   titleLarge: TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.white,
-            //     fontSize: 20
-            //   )
-            // )
-          ),
-          debugShowCheckedModeBanner: false,
-          home: const ProfileView(),
-        );
-      },
+    return BlocProvider(
+      create: (context) => ThemeBloc(),
+      child: BlocBuilder<ThemeBloc, ThemeType>(
+        builder: (context, state) {
+          final ThemeData themeData = state == ThemeType.dark ?
+          ThemeData.dark().copyWith(
+            textTheme: darkTextTheme,
+              listTileTheme: darkListTileThemeData,
+            inputDecorationTheme: darkInputDecorationTheme,
+          ) :
+          ThemeData.light().copyWith(
+            textTheme: lightTextTheme,
+            scaffoldBackgroundColor: Colors.grey.shade200,
+            inputDecorationTheme: lightInputDecorationTheme,
+            listTileTheme: lightListTileThemeData
+          );
+          return MaterialApp(
+            theme: themeData,
+            title: 'Flutter Assessment',
+            debugShowCheckedModeBanner: false,
+            home: const ProfileView(),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,14 +1,20 @@
+import 'dart:developer';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
+import 'package:tericce_animation/bloc_notifier/add_data_bloc/add_user_bloc.dart';
 import 'package:tericce_animation/bloc_notifier/theme_bloc/theme_bloc.dart';
 import 'package:tericce_animation/bloc_notifier/update_data_bloc/get_user_bloc.dart';
 import 'package:tericce_animation/generated/assets.dart';
+import 'package:tericce_animation/models/user_model/user_model.dart';
 import 'package:tericce_animation/utils/components/form_field.dart';
 import 'package:tericce_animation/utils/text_styles/text_styles.dart';
 import 'package:tericce_animation/view/profile_view/update_profile_view.dart';
+import 'package:tericce_animation/view/profile_view/widgets/add_data_sheet.dart';
+import 'package:tericce_animation/view/profile_view/widgets/custom_listtile.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -69,7 +75,7 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
       appBar: AppBar(
         title: Text(
           'Profile Screen',
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 22),
         ),
         centerTitle: true,
       ),
@@ -100,7 +106,7 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
                           children: [
                             Text(
                               'Mark Adam',
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 30,fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text('Developer',
                                 style: Theme.of(context).textTheme.bodyMedium),
@@ -129,8 +135,8 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
                     ),
                     const SizedBox(height: 16),
                     Text('Email',
-                        style: AppTextStyles.instance.f16w400Black
-                            .copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)
+                    ),
                     const SizedBox(height: 8),
                     CustomFormField(
                       readOnly: true,
@@ -148,8 +154,7 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Gender',
-                                  style: AppTextStyles.instance.f16w400Black
-                                      .copyWith(fontWeight: FontWeight.bold)),
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)),
                               CustomFormField(
                                 readOnly: true,
                                 enable: false,
@@ -167,8 +172,7 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Dob',
-                                  style: AppTextStyles.instance.f16w400Black
-                                      .copyWith(fontWeight: FontWeight.bold)),
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)),
                               CustomFormField(
                                 readOnly: true,
                                 enable: false,
@@ -203,12 +207,12 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
                       },
                     ),
                     const SizedBox(height: 16),
-                    BlocBuilder<ThemeBloc, ThemeData>(
+                    BlocBuilder<ThemeBloc, ThemeType>(
                       builder: (context, state) {
                         return CustomListTile(
                           title: 'Switch Theme',
-                          subtitle: 'Dark Mode',
-                          value: state == ThemeData.dark(),
+                          subtitle: state == ThemeType.dark ? 'Dark Mode' : 'Light Mode',
+                          value: state == ThemeType.dark,
                           onChange: (value) {
                             BlocProvider.of<ThemeBloc>(context).add(ThemeSwitchEvent());
                           },
@@ -219,48 +223,21 @@ class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
                 );
               }
               if (state is GetUserError) {
-                return Center(child: Text(state.error));
+                return Center(
+                    child: TextButton(
+                    onPressed: (){
+                      showModalBottomSheet(context: context, builder: (context){
+                        return AddUserDataSheet();
+                      });
+                    },
+                      child: const Text('Add data'),
+                    ),
+                );
               }
               return Container();
             },
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CustomListTile extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Function(dynamic)? onChange;
-  final bool value;
-  const CustomListTile({
-    super.key,
-    required this.title,
-    this.subtitle = '',
-    this.onChange,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      // tileColor: Colors.white,
-      title: Row(
-        children: [
-          Text(title,
-              style: Theme.of(context).textTheme.bodyLarge),
-          const Spacer(),
-          if (subtitle.isNotEmpty)
-            Text(subtitle,
-                style: Theme.of(context).textTheme.bodyLarge),
-        ],
-      ),
-      trailing: CupertinoSwitch(
-        value: value,
-        onChanged: onChange,
       ),
     );
   }

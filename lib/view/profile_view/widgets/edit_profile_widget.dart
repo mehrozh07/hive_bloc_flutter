@@ -73,11 +73,10 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   children: [
                     Text(
                       'Mark Adam',
-                      style: AppTextStyles.instance.f16w400Black
-                          .copyWith(fontWeight: FontWeight.bold, fontSize: 30),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text('Developer',
-                        style: AppTextStyles.instance.f16w400Black.copyWith(color: Colors.grey)),
+                        style:  Theme.of(context).textTheme.bodyMedium),
                   ],
                 )
               ],
@@ -90,8 +89,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
               children: [
                 const SizedBox(height: 16),
                 Text('Email',
-                    style: AppTextStyles.instance.f16w400Black
-                        .copyWith(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 CustomFormField(
                   controller: emailC,
@@ -113,8 +111,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Gender',
-                              style: AppTextStyles.instance.f16w400Black
-                                  .copyWith(fontWeight: FontWeight.bold)),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)),
                           CustomFormField(
                             controller: genderC,
                             validator: (value){
@@ -135,8 +132,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Dob',
-                              style: AppTextStyles.instance.f16w400Black
-                                  .copyWith(fontWeight: FontWeight.bold)),
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)),
                           CustomFormField(
                             controller: dobC,
                             readOnly: true,
@@ -179,9 +175,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           Navigator.pop(context);
                         },
                         child: Text('Cancel',
-                            style: AppTextStyles.instance.f16w400Black.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16,fontWeight: FontWeight.bold)),
                       ),
                     ),
                     const SizedBox(width: 16),

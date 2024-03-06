@@ -21,8 +21,7 @@ class UpdateProfileView extends StatelessWidget {
         centerTitle: true,
         title: Text(
           'Edit Screen',
-          style: AppTextStyles.instance.f16w400Black
-              .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 22),
         ),
       ),
       body: SingleChildScrollView(
@@ -31,9 +30,9 @@ class UpdateProfileView extends StatelessWidget {
             BlocBuilder<GetUserBloc, GetUserState>(
               builder: (context, state) {
                 if(state is GetUserLoading){
-                  return Center(child: CircularProgressIndicator.adaptive());
+                  return const Center(child: CircularProgressIndicator.adaptive());
                 }if(state is GetUserError){
-                  return Center(child: Text('${state.error}'));
+                  return Center(child: Text(state.error));
                 }
                 if(state is GetUserSuccess) {
                   return EditProfileWidget(userModel: state.userModel);
